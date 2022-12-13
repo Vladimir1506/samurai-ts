@@ -1,10 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
+import {store, StoreType} from './state';
+import ReactDOM from 'react-dom';
 import App from './App';
-import {state} from './state';
+import {BrowserRouter} from 'react-router-dom';
 
-ReactDOM.render(
-    <App state={state}/>,
-    document.getElementById('root')
-);
+const rerenderEntireTree = (store: StoreType) => {
+    ReactDOM.render(<BrowserRouter>
+            <App store={store}/>
+        </BrowserRouter>,
+        document.getElementById('root'))
+}
+rerenderEntireTree(store)
+store.subscribe(rerenderEntireTree)

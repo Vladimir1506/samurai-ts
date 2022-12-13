@@ -3,6 +3,10 @@
     grid-template-columns: 2fr 10fr;
 }
 
-.contacts{
+.contacts {
+    display: flex;
     padding-left: 10px;
+}
+.messages{
+    margin-left: 50px;
 }

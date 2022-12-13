@@ -3,9 +3,9 @@ import React from 'react';
 type MessagePropsType = {
     message: string
 }
-const Message = (props: MessagePropsType) => {
+const Message = ({message}: MessagePropsType) => {
     return (
-        <div className="message">{props.message}</div>
+        <div className="message">{message}</div>
     );
 };
 

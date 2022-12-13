@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import Post from './Post/Post';
 import {PostType} from '../../../state';
 
 type MyPostsPropsType = {
-    posts: Array<PostType>
+    addPost: (postMessage: string) => void
+    changePostTextValue: (newPostText: string) => void
+    profileData: {
+        posts: Array<PostType>
+        newPostText: string
+    }
 }
-const MyPosts = ({posts}: MyPostsPropsType) => {
-    const allPosts = posts.map((post: PostType) => <Post post={post}/>)
+const MyPosts = ({addPost, changePostTextValue, profileData: {posts, newPostText}}: MyPostsPropsType) => {
+    const allPosts = posts.map((post: PostType) => <Post key={post.id} post={post}/>)
+    const addNewPost = () => (newPostText.trim() != '') && addPost(newPostText)
+    const changePostText = (e: ChangeEvent<HTMLTextAreaElement>) => changePostTextValue(e.currentTarget.value)
+
     return (
         <div>
             My posts
             <div>
-                <textarea></textarea>
-                <button>Add post</button>
+                <textarea value={newPostText} onChange={changePostText}/>
+                <button onClick={addNewPost}>Add post</button>
             </div>
             <div>
                 {allPosts}

@@ -7,27 +7,28 @@ import Music from './components/Music/Music';
 import News from './components/News/News';
 import Profile from './components/Profile/Profile';
 import Settings from './components/Settings/Settings';
-import {BrowserRouter, Route} from 'react-router-dom';
-import {StateType} from './state';
+import {Route} from 'react-router-dom';
+import {StoreType} from './state';
 
-type AppPropsType = { state: StateType }
+type AppPropsType = { store: StoreType }
 
-function App({state}: AppPropsType) {
+function App(props: AppPropsType) {
     return (
-        <BrowserRouter>
-            <div className="app-wrapper">
-                <Header/>
-                <Navbar/>
-                <div className="app-wrapper-content">
-                    <Route path="/profile" render={() => <Profile posts={state.posts}/>}/>
-                    <Route path="/dialogs"
-                           render={() => <Dialogs contacts={state.contacts} messages={state.messages}/>}/>
-                    <Route path="/news" component={News}/>
-                    <Route path="/music" component={Music}/>
-                    <Route path="/settings" component={Settings}/>
-                </div>
+        <div className="app-wrapper">
+            <Header/>
+            <Navbar/>
+            <div className="app-wrapper-content">
+                <Route path="/profile"
+                       render={() => <Profile changePostTextValue={props.store.changePostTextValue.bind(props.store)}
+                                              addPost={props.store.addPost.bind(props.store)}
+                                              profileData={props.store.getState().profilePage}/>}/>
+                <Route path="/dialogs"
+                       render={() => <Dialogs messagesPage={props.store.getState().messagesPage}/>}/>
+                <Route path="/news" component={News}/>
+                <Route path="/music" component={Music}/>
+                <Route path="/settings" component={Settings}/>
             </div>
-        </BrowserRouter>
+        </div>
     );
 }
 
