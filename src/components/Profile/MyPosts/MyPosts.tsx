@@ -1,25 +1,32 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
 import Post from './Post/Post';
-import {PostType} from '../../../state';
+import {ActionType, PostType} from '../../../state';
 
 type MyPostsPropsType = {
-    addPost: (postMessage: string) => void
-    changePostTextValue: (newPostText: string) => void
+    dispatch: (action: ActionType) => void
     profileData: {
         posts: Array<PostType>
         newPostText: string
     }
 }
-const MyPosts = ({addPost, changePostTextValue, profileData: {posts, newPostText}}: MyPostsPropsType) => {
+const MyPosts = ({dispatch, profileData: {posts, newPostText}}: MyPostsPropsType) => {
     const allPosts = posts.map((post: PostType) => <Post key={post.id} post={post}/>)
-    const addNewPost = () => (newPostText.trim() != '') && addPost(newPostText)
-    const changePostText = (e: ChangeEvent<HTMLTextAreaElement>) => changePostTextValue(e.currentTarget.value)
+    const addNewPost = () => (newPostText.trim() != '') && dispatch({type: 'ADD-POST', postMessage: newPostText})
+    const changePostText = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch({
+        type: 'CHANGE-POST-TEXT-VALUE',
+        newPostText: e.currentTarget.value
+    })
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key !== 'Enter') return
+        addNewPost()
+        e.preventDefault()
+    }
 
     return (
         <div>
             My posts
             <div>
-                <textarea value={newPostText} onChange={changePostText}/>
+                <textarea value={newPostText} onChange={changePostText} onKeyPress={onKeyPressHandler}/>
                 <button onClick={addNewPost}>Add post</button>
             </div>
             <div>

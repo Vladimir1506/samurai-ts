@@ -22,10 +22,14 @@ export type ContactType = {
 export type StoreType = {
     _callSubscriber: (store: StoreType) => void
     subscribe: (observer: (store: StoreType) => void) => void
-    addPost: (post: string) => void
-    changePostTextValue: (postText: string) => void
     _state: StateType
     getState: () => StateType
+    dispatch: (action: ActionType) => void
+}
+export type ActionType = {
+    type: string
+    postMessage?: string
+    newPostText?: string
 }
 export const store: StoreType = {
     _state: {
@@ -36,7 +40,7 @@ export const store: StoreType = {
                 {id: 3, postText: 'POST3', likesCount: 6},
                 {id: 4, postText: 'POST4', likesCount: 1},
             ],
-            newPostText: 'sdsd',
+            newPostText: '',
         },
         messagesPage: {
             contacts: [
@@ -79,20 +83,22 @@ export const store: StoreType = {
     getState() {
         return this._state
     },
-    addPost(postMessage) {
-        console.log(store)
-        const posts = this._state.profilePage.posts
-        posts.push({
-            id: posts.length + 1,
-            postText: postMessage,
-            likesCount: 0
-        })
-        this.changePostTextValue('')
-        this._callSubscriber(this)
-    },
-    changePostTextValue(newPostText: string) {
-        this._state.profilePage.newPostText = newPostText
-        this._callSubscriber(this)
+    dispatch(action) {
+        if (action.type === 'ADD-POST') {
+            const posts = this._state.profilePage.posts
+            const postMessage = action.postMessage
+            posts.push({
+                id: posts.length + 1,
+                postText: postMessage ? postMessage : '',
+                likesCount: 0
+            })
+            this.dispatch({type: 'CHANGE-POST-TEXT-VALUE', newPostText: ''})
+            this._callSubscriber(this)
+        } else if (action.type === 'CHANGE-POST-TEXT-VALUE') {
+            const newPostText = action.newPostText
+            this._state.profilePage.newPostText = newPostText ? newPostText : ''
+            this._callSubscriber(this)
+        }
     }
 }
 

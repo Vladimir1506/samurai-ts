@@ -1,11 +1,10 @@
 import React from 'react';
 import MyPosts from './MyPosts/MyPosts';
 import ProfileInfo from './ProfileInfo';
-import {PostType} from '../../state';
+import {ActionType, PostType} from '../../state';
 
 type ProfilePropsType = {
-    addPost: (post: string) => void
-    changePostTextValue: (postText: string) => void
+    dispatch: (action: ActionType) => void
     profileData: {
         posts: Array<PostType>,
         newPostText: string
@@ -15,8 +14,7 @@ type ProfilePropsType = {
 const Profile = (props: ProfilePropsType) =>
     <div>
         <ProfileInfo/>
-        <MyPosts changePostTextValue={props.changePostTextValue}
-                 addPost={props.addPost}
+        <MyPosts dispatch={props.dispatch}
                  profileData={props.profileData}/>
     </div>
 
