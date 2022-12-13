@@ -1,13 +1,14 @@
 import React from 'react';
 import Message from './Message';
+import classes from './Dialogs.module.css'
 
 type MessagesPropsType = {
-    messages: Array<string>
+    messagesArray: Array<string>
 }
-const Messages = ({messages}: MessagesPropsType) => {
-    const allMessages = messages.map((message: string) => <Message message={message}/>)
+const Messages = ({messagesArray}: MessagesPropsType) => {
+    const allMessages = messagesArray.map((message: string) => <Message message={message}/>)
     return (
-        <div className="messages">
+        <div className={classes.messages}>
             {allMessages}
         </div>
     );

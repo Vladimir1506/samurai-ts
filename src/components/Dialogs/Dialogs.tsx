@@ -1,17 +1,20 @@
 import React from 'react';
 import classes from './Dialogs.module.css';
+import {ContactType, MessagesType} from '../../state';
 import Contacts from './Contacts';
-import Messages from './Messages';
-import {ContactType} from '../../state';
 
 type DialogsPropsType = {
-    contacts: Array<ContactType>
-    messages: Array<string>
+    messagesPage: {
+        contacts: Array<ContactType>
+        messages: MessagesType
+    }
 }
-const Dialogs = ({contacts, messages}: DialogsPropsType) =>
-    <div className={classes.dialogs}>
-        <Contacts contacts={contacts}/>
-        <Messages messages={messages}/>
-    </div>
+const Dialogs = ({messagesPage: {contacts, messages}}: DialogsPropsType) => {
+    return (
+        <div className={classes.contacts}>
+            <Contacts contacts={contacts} messages={messages}/>
+        </div>
+    );
+}
 
 export default Dialogs

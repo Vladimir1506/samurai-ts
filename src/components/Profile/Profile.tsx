@@ -4,13 +4,20 @@ import ProfileInfo from './ProfileInfo';
 import {PostType} from '../../state';
 
 type ProfilePropsType = {
-    posts: Array<PostType>
+    addPost: (post: string) => void
+    changePostTextValue: (postText: string) => void
+    profileData: {
+        posts: Array<PostType>,
+        newPostText: string
+    }
 }
 
-const Profile = ({posts}: ProfilePropsType) =>
+const Profile = (props: ProfilePropsType) =>
     <div>
         <ProfileInfo/>
-        <MyPosts posts={posts}/>
+        <MyPosts changePostTextValue={props.changePostTextValue}
+                 addPost={props.addPost}
+                 profileData={props.profileData}/>
     </div>
 
 export default Profile
