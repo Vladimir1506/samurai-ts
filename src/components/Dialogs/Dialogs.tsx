@@ -1,18 +1,20 @@
 import React from 'react';
 import classes from './Dialogs.module.css';
-import {ContactType, MessagesType} from '../../state';
+import {ActionType, ContactType, MessagesType} from '../../redux/store';
 import Contacts from './Contacts';
 
 type DialogsPropsType = {
+    dispatch: (action: ActionType) => void
     messagesPage: {
         contacts: Array<ContactType>
         messages: MessagesType
+
     }
 }
-const Dialogs = ({messagesPage: {contacts, messages}}: DialogsPropsType) => {
+const Dialogs = (props: DialogsPropsType) => {
     return (
         <div className={classes.contacts}>
-            <Contacts contacts={contacts} messages={messages}/>
+            <Contacts contactsProps={props}/>
         </div>
     );
 }
