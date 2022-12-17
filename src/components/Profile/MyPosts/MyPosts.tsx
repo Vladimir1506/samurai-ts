@@ -1,23 +1,19 @@
 import React, {ChangeEvent, KeyboardEvent} from 'react';
 import Post from './Post/Post';
-import {ActionType, PostType} from '../../../redux/store';
-import {addPostActionCreator, changePostTextValueActionCreator} from '../../../redux/profilePage-reducer';
+import {PostType} from '../../../redux/store';
 
 type MyPostsPropsType = {
-    dispatch: (action: ActionType) => void
-    profileData: {
-        posts: Array<PostType>
-        newPostText: string
-    }
+    newPostText: string
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    addPost: () => void
+    posts: Array<PostType>
 }
-const MyPosts = ({dispatch, profileData: {posts, newPostText}}: MyPostsPropsType) => {
+const MyPosts = ({newPostText, onChange, posts, addPost}: MyPostsPropsType) => {
     const allPosts = posts.map((post: PostType) => <Post key={post.id} post={post}/>)
-    const addNewPost = () => (newPostText.trim() != '') && dispatch(addPostActionCreator(newPostText.trim()))
-    const changePostText = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch(changePostTextValueActionCreator(e.currentTarget.value))
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key !== 'Enter') return
-        addNewPost()
+        addPost()
         e.preventDefault()
     }
 
@@ -25,8 +21,8 @@ const MyPosts = ({dispatch, profileData: {posts, newPostText}}: MyPostsPropsType
         <div>
             My posts
             <div>
-                <textarea value={newPostText} onChange={changePostText} onKeyPress={onKeyPressHandler}/>
-                <button onClick={addNewPost}>Add post</button>
+                <textarea value={newPostText} onChange={onChange} onKeyPress={onKeyPressHandler}/>
+                <button onClick={addPost}>Add post</button>
             </div>
             <div>
                 {allPosts}

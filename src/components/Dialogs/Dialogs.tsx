@@ -1,22 +1,29 @@
-import React from 'react';
-import classes from './Dialogs.module.css';
-import {ActionType, ContactType, MessagesType} from '../../redux/store';
-import Contacts from './Contacts';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
+import classes from './Dialogs.module.css'
 
-type DialogsPropsType = {
-    dispatch: (action: ActionType) => void
-    messagesPage: {
-        contacts: Array<ContactType>
-        messages: MessagesType
+type MessagesPropsType = {
+    messageText: string
+    messagesArray: Array<string>
+    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    onSend: (text: string) => void
 
-    }
 }
-const Dialogs = (props: DialogsPropsType) => {
+const Dialogs = ({messageText, messagesArray, onChange, onSend}: MessagesPropsType) => {
+    const allMessages = messagesArray.map((message: string, index: number) => <div key={index}
+                                                                                   className="message">{message}</div>)
+    const onButtonClickHandler = () => onSend(messageText)
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => e.key === 'Enter' && onSend(messageText) && e.preventDefault()
+
     return (
-        <div className={classes.contacts}>
-            <Contacts contactsProps={props}/>
+        <div className={classes.messages}>
+            {allMessages}
+            <div><textarea value={messageText} onKeyPress={onKeyPressHandler} onChange={onChange}
+                           placeholder="Enter your message"/></div>
+            <div>
+                <button onClick={onButtonClickHandler}>SEND</button>
+            </div>
         </div>
     );
-}
+};
 
-export default Dialogs
+export default Dialogs;
