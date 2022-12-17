@@ -1,4 +1,5 @@
-import {ActionType, AddPostActionType, changePostTextValueActionType, PostType} from './store';
+import {AddPostActionType, changePostTextValueActionType, PostType} from './store';
+import {AnyAction} from 'redux';
 
 export type ProfilePageStateType = {
     posts: Array<PostType>,
@@ -11,7 +12,16 @@ export const changePostTextValueActionCreator = (text: string): changePostTextVa
     type: CHANGE_POST_TEXT_VALUE,
     text
 })
-export const profilePageReducer = (state: ProfilePageStateType, action: ActionType) => {
+const initState = {
+    posts: [
+        {id: 1, postText: 'POST1', likesCount: 4},
+        {id: 2, postText: 'POST2', likesCount: 2},
+        {id: 3, postText: 'POST3', likesCount: 6},
+        {id: 4, postText: 'POST4', likesCount: 1},
+    ],
+    newPostText: '',
+}
+export const profilePageReducer = (state: ProfilePageStateType = initState, action: AnyAction) => {
     switch (action.type) {
         case ADD_POST:
             const posts = state.posts

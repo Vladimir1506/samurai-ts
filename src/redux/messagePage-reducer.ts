@@ -1,4 +1,5 @@
-import {ActionType, changeMessageTextValueActionType, ContactType, MessagesType, sendMessageActionType} from './store';
+import {changeMessageTextValueActionType, ContactType, MessagesType, sendMessageActionType} from './store';
+import {AnyAction} from 'redux';
 
 export type messagesPageStateType = {
     contacts: Array<ContactType>
@@ -16,7 +17,57 @@ export const changeMessageTextValueActionCreator = (id: string, text: string): c
     id,
     text
 })
-export const messagePageReducer = (state: messagesPageStateType, action: ActionType) => {
+
+const initState = {
+
+    contacts: [
+        {id: 1, name: 'Misha'},
+        {id: 2, name: 'Peter'},
+        {id: 3, name: 'Alex'},
+        {id: 4, name: 'Victor'},
+        {id: 5, name: 'Liza'},
+    ],
+    messages: {
+        '1': {
+            messageText: '',
+            messagesArray: [
+                'Hello Misha!',
+                'How are you?',
+                'Fine!',
+            ]
+        },
+        '2': {
+            messageText: '',
+            messagesArray: [
+                'Hello Peter!',
+                'How are you?',
+                'Fine!',
+            ]
+        },
+        '3': {
+            messageText: '',
+            messagesArray: [
+                'Hello Alex!',
+                'How are you?',
+                'Fine!',
+            ]
+        },
+        '4': {
+            messageText: '',
+            messagesArray: [
+                'Hello Victor!',
+                'How are you?',
+                'Fine!',
+            ]
+        },
+        '5': {
+            messageText: '',
+            messagesArray: []
+        },
+    }
+
+}
+export const messagePageReducer = (state: messagesPageStateType = initState, action: AnyAction) => {
     switch (action.type) {
         case CHANGE_MESSAGE_TEXT_VALUE:
             action.id && (state.messages[action.id].messageText = action.text)
@@ -27,6 +78,5 @@ export const messagePageReducer = (state: messagesPageStateType, action: ActionT
             return state
         default:
             return state
-
     }
 }

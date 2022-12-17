@@ -8,23 +8,27 @@ import News from './components/News/News';
 import Profile from './components/Profile/Profile';
 import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
-import {StoreType} from './redux/store';
+import {StateType} from './index';
+import {AnyAction} from 'redux';
 
-type AppPropsType = { store: StoreType }
+type AppPropsType = {
+    state: StateType,
+    dispatch: (action: AnyAction) => void
+}
 
-function App(props: AppPropsType) {
+const App: React.FC<AppPropsType> = ({state, dispatch}) => {
     return (
         <div className="app-wrapper">
             <Header/>
             <Navbar/>
             <div className="app-wrapper-content">
                 <Route path="/profile"
-                       render={() => <Profile dispatch={props.store.dispatch.bind(props.store)}
-                                              profileData={props.store.getState().profilePage}/>}/>
+                       render={() => <Profile dispatch={dispatch}
+                                              profileData={state.profilePageReducer}/>}/>
                 <Route path="/dialogs"
                        render={() => <Dialogs
-                           dispatch={props.store.dispatch.bind(props.store)}
-                           messagesPage={props.store.getState().messagesPage}/>}/>
+                           dispatch={dispatch}
+                           messagesPage={state.messagePageReducer}/>}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>
