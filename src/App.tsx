@@ -7,25 +7,21 @@ import News from './components/News/News';
 import Profile from './components/Profile/Profile';
 import Settings from './components/Settings/Settings';
 import {Route} from 'react-router-dom';
-import {StateType} from './index';
-import {Store} from 'redux';
-import DialogsContainer from './components/Dialogs/DialogsContainer';
+import DialogsSuperContainer from './components/Dialogs/DialogsSuperContainer';
+import {UsersContainer} from './components/Users/UsersContainer';
 
-type AppPropsType = {
-    state: StateType,
-    store: Store
-}
 
-const App: React.FC<AppPropsType> = ({store}) => {
+const App: React.FC = () => {
     return (
         <div className="app-wrapper">
             <Header/>
             <Navbar/>
             <div className="app-wrapper-content">
                 <Route path="/profile"
-                       render={() => <Profile store={store}/>}/>
+                       render={() => <Profile/>}/>
                 <Route path="/dialogs"
-                       render={() => <DialogsContainer store={store}/>}/>
+                       render={() => <DialogsSuperContainer/>}/>
+                <Route path="/users" component={UsersContainer}/>
                 <Route path="/news" component={News}/>
                 <Route path="/music" component={Music}/>
                 <Route path="/settings" component={Settings}/>

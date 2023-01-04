@@ -1,14 +1,32 @@
-import React, {ChangeEvent} from 'react';
-import {addPostActionCreator, changePostTextValueActionCreator} from '../../../redux/profilePage-reducer';
+import React from 'react';
+import {addPostAC, changePostTextValueAC} from '../../../redux/profilePage-reducer';
 import MyPosts from './MyPosts';
-import {Store} from 'redux';
+import {connect} from 'react-redux';
+import {AppStateType} from '../../../redux/redux-store';
+import {Dispatch} from 'redux';
 
-type MyPostsPropsType = { store: Store }
-const MyPostsContainer = ({store: {dispatch, ...store}}: MyPostsPropsType) => {
-    const {newPostText, posts} = store.getState().profilePageReducer
-    const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => dispatch(changePostTextValueActionCreator(e.currentTarget.value))
-    const addNewPost = () => (newPostText.trim() != '') && dispatch(addPostActionCreator(newPostText.trim()))
-
-    return <MyPosts posts={posts} newPostText={newPostText} onChange={onChangeText} addPost={addNewPost}/>
+export type PostType = {
+    id: number,
+    postText: string,
+    likesCount: number
 }
+type MapStateToPropsType = {
+    posts: Array<PostType>
+    newPostText: string
+}
+type MapDispatchToPropsType = {
+    onChange: (text: string) => void
+    addPost: () => void
+}
+export type MyPostsPropsType = MapStateToPropsType & MapDispatchToPropsType
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
+    posts: state.profilePage.posts,
+    newPostText: state.profilePage.newPostText
+})
+const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
+    onChange: (text: string) => dispatch(changePostTextValueAC(text)),
+    addPost: () => dispatch(addPostAC())
+
+})
+const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
 export default MyPostsContainer

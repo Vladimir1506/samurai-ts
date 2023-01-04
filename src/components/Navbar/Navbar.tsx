@@ -12,6 +12,9 @@ const Navbar = () => {
                 <NavLink activeClassName={classes.active} to={'/dialogs'}>Dialogs</NavLink>
             </div>
             <div className={classes.item}>
+                <NavLink activeClassName={classes.active} to={'/users'}>Users</NavLink>
+            </div>
+            <div className={classes.item}>
                 <NavLink activeClassName={classes.active} to={'/news'}>News</NavLink>
             </div>
             <div className={classes.item}>

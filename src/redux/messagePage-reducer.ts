@@ -1,25 +1,22 @@
-import {changeMessageTextValueActionType, ContactType, MessagesType, sendMessageActionType} from './store';
 import {AnyAction} from 'redux';
+import {ContactType} from '../components/Dialogs/Contacts';
 
+export type MessageType = {
+    messageText: string,
+    messagesArray: Array<string>
+}
+type MessagesType = {
+    [contactId: string]: MessageType
+}
 export type messagesPageStateType = {
     contacts: Array<ContactType>
     messages: MessagesType
 }
+
 const SEND_MESSAGE = 'SEND-MESSAGE'
 const CHANGE_MESSAGE_TEXT_VALUE = 'CHANGE-MESSAGE-TEXT-VALUE'
-export const sendMessageActionCreator = (id: string, text: string): sendMessageActionType => ({
-    type: SEND_MESSAGE,
-    id,
-    text
-})
-export const changeMessageTextValueActionCreator = (id: string, text: string): changeMessageTextValueActionType => ({
-    type: CHANGE_MESSAGE_TEXT_VALUE,
-    id,
-    text
-})
 
 const initState = {
-
     contacts: [
         {id: 1, name: 'Misha'},
         {id: 2, name: 'Peter'},
@@ -67,16 +64,36 @@ const initState = {
     }
 
 }
-export const messagePageReducer = (state: messagesPageStateType = initState, action: AnyAction) => {
+export const messagePageReducer = (state: messagesPageStateType = initState, action: AnyAction): messagesPageStateType => {
     switch (action.type) {
         case CHANGE_MESSAGE_TEXT_VALUE:
-            action.id && (state.messages[action.id].messageText = action.text)
-            return state
+            return {
+                ...state,
+                messages: {...state.messages, [action.id]: {...state.messages[action.id], messageText: action.text}}
+            }
         case SEND_MESSAGE:
-            action.id && state.messages[action?.id].messagesArray.push(action.text)
-            action.id && (state.messages[action.id].messageText = '')
-            return state
+            return {
+                ...state,
+                messages: {
+                    ...state.messages,
+                    [action.id]: {
+                        ...state.messages[action.id],
+                        messageText: '',
+                        messagesArray: [...state.messages[action.id].messagesArray, action.text]
+                    }
+                }
+            }
         default:
             return state
     }
 }
+export const sendMessageAC = (id: string, text: string) => ({
+    type: SEND_MESSAGE,
+    id,
+    text
+})
+export const changeMessageTextValueAC = (id: string, text: string) => ({
+    type: CHANGE_MESSAGE_TEXT_VALUE,
+    id,
+    text
+})

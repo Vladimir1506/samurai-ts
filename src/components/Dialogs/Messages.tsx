@@ -4,20 +4,20 @@ import classes from './Dialogs.module.css'
 type MessagesPropsType = {
     messageText: string
     messagesArray: Array<string>
-    onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    onChange: (text: string) => void
     onSend: (text: string) => void
 
 }
-const Dialogs = ({messageText, messagesArray, onChange, onSend}: MessagesPropsType) => {
+const Messages: React.FC<MessagesPropsType> = ({messageText, messagesArray, onChange, onSend}: MessagesPropsType) => {
     const allMessages = messagesArray.map((message: string, index: number) => <div key={index}
                                                                                    className="message">{message}</div>)
     const onButtonClickHandler = () => onSend(messageText)
     const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => e.key === 'Enter' && onSend(messageText) && e.preventDefault()
-
+    const onChangeMessageHandler = (e: ChangeEvent<HTMLTextAreaElement>) => onChange(e.currentTarget.value)
     return (
         <div className={classes.messages}>
             {allMessages}
-            <div><textarea value={messageText} onKeyPress={onKeyPressHandler} onChange={onChange}
+            <div><textarea value={messageText} onKeyPress={onKeyPressHandler} onChange={onChangeMessageHandler}
                            placeholder="Enter your message"/></div>
             <div>
                 <button onClick={onButtonClickHandler}>SEND</button>
@@ -26,4 +26,4 @@ const Dialogs = ({messageText, messagesArray, onChange, onSend}: MessagesPropsTy
     );
 };
 
-export default Dialogs;
+export default Messages;

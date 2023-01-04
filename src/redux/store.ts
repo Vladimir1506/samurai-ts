@@ -8,7 +8,7 @@
 //     getState: () => StateType
 //     dispatch: (action: ActionType) => void
 // }
-// export type StateType = {
+// type StateType = {
 //     profilePage: {
 //         posts: Array<PostType>,
 //         newPostText: string,
@@ -18,46 +18,32 @@
 //         messages: MessagesType
 //     },
 // }
-export type MessagesType = {
-    [contactId: string]: MessageType
-}
-export type MessageType = {
-    messageText: string,
-    messagesArray: Array<string>
-}
-export type PostType = {
-    id: number,
-    postText: string,
-    likesCount: number
-}
-export type ContactType = {
-    id: number,
-    name: string,
-}
 
-export type ActionType = changePostTextValueActionType
-    | AddPostActionType
-    | sendMessageActionType
-    | changeMessageTextValueActionType
-export type changePostTextValueActionType = {
-    type: 'CHANGE-POST-TEXT-VALUE'
-    text: string
-}
-export type AddPostActionType = {
-    type: 'ADD-POST'
-    text: string
-}
-export type sendMessageActionType = {
-    type: 'SEND-MESSAGE'
-    id: string
-    text: string
-}
-export type changeMessageTextValueActionType = {
-    type: 'CHANGE-MESSAGE-TEXT-VALUE'
-    id: string
-    text: string
-}
 
+
+
+// export type ActionType = changePostTextValueActionType
+//     | AddPostActionType
+//     | sendMessageActionType
+//     | changeMessageTextValueActionType
+// export type changePostTextValueActionType = {
+//     type: 'CHANGE-POST-TEXT-VALUE'
+//     text: string
+// }
+// export type AddPostActionType = {
+//     type: 'ADD-POST'
+// }
+// export type sendMessageActionType = {
+//     type: 'SEND-MESSAGE'
+//     id: string
+//     text: string
+// }
+// export type changeMessageTextValueActionType = {
+//     type: 'CHANGE-MESSAGE-TEXT-VALUE'
+//     id: string
+//     text: string
+// }
+export const a=''
 // const store: StoreType = {
 //     _state: {
 //         profilePage: {
