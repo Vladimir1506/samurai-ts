@@ -5,6 +5,7 @@ export type UserType = {
     id: string,
     name: string,
     avatar: string,
+    photos: { small: string },
     followed: boolean,
     address: {
         country: string,
