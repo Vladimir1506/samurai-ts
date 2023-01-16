@@ -12,3 +12,12 @@
 .avatar {
     width: 25%;
 }
+
+.page {
+    cursor: pointer;
+    margin: 0 5px 0 5px;
+}
+
+.selectedPage {
+    font-weight: bold;
+}

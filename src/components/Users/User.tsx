@@ -24,8 +24,8 @@ const User = ({user, follow, unfollow}: UserPropsType) => {
             </div>
             <div><span>{user.name}</span></div>
             <div className={classes.address}>
-                <div>{'user.address.country'}</div>
-                <div>{'user.address.city'}</div>
+                {/*<div>{'user.address.country'}</div>*/}
+                {/*<div>{'user.address.city'}</div>*/}
             </div>
         </div>
     );

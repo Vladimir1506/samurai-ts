@@ -2,6 +2,7 @@ import React from 'react';
 import User from './User';
 import {UsersPropsType} from './UsersContainer';
 import axios from 'axios';
+import PagerPageNumber from './PagerPageNumber';
 
 
 // const Users = (props: UsersPropsType) => {
@@ -46,22 +47,56 @@ import axios from 'axios';
 
 class Users extends React.Component<UsersPropsType> {
     componentDidMount() {
-        this.getUsers()
-    }
-
-    getUsers = () => {
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then((data: any) => {
             this.props.setUsers(data.data.items)
+            this.props.setTotalUsersCount(data.data.totalCount)
         })
     }
 
     render() {
+        const currentPage = this.props.currentPage
+
+        const mappedUsers = this.props.users.map((user, index) => <User
+            user={user}
+            follow={this.props.follow}
+            unfollow={this.props.unfollow}
+            key={index}/>)
+        const totalPages = Math.ceil(this.props.totalUsersCount / this.props.pageSize)
+        let pages: number[] = []
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            (i > 0) && (i <= totalPages) && pages.push(i)
+        }
+        const firstPage = (<>
+            <PagerPageNumber pageNumber={1}
+                             currentPage={currentPage}
+                             pageSize={this.props.pageSize}
+                             setCurrentPage={this.props.setCurrentPage}
+                             setUsers={this.props.setUsers}
+            />
+            <span>...</span>
+        </>)
+        const lastPage = (<>
+            <span>...</span>
+            <PagerPageNumber pageNumber={totalPages} currentPage={currentPage}
+                             pageSize={this.props.pageSize}
+                             setCurrentPage={this.props.setCurrentPage}
+                             setUsers={this.props.setUsers}/>
+        </>)
+        const mappedPages = pages.map((page, index) => {
+            return (<PagerPageNumber key={index}
+                                     pageNumber={page}
+                                     currentPage={this.props.currentPage}
+                                     pageSize={this.props.pageSize}
+                                     setCurrentPage={this.props.setCurrentPage}
+                                     setUsers={this.props.setUsers}/>)
+
+        })
+
         return <div>
-            {this.props.users.map(user => <User
-                user={user}
-                follow={this.props.follow}
-                unfollow={this.props.unfollow}
-                key={user.id}/>)}
+            {(currentPage > 3) && firstPage}
+            {mappedPages}
+            {(currentPage < totalPages - 2) && lastPage}
+            {mappedUsers}
         </div>
     }
 }
