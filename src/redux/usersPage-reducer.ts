@@ -23,7 +23,7 @@ type UsersStateType = {
 const initialState = {
     users: [],
     totalUsersCount: 77,
-    pageSize: 5,
+    pageSize: 15,
     currentPage: 1
 }
 export const usersPageReducer = (state: UsersStateType = initialState, action: ActionType): UsersStateType => {
