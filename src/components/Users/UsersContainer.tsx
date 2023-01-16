@@ -7,6 +7,7 @@ import Users from './Users';
 import {
     followAC,
     setCurrentPageAC,
+    setFetchingAC,
     setTotalUsersCountAC,
     setUsersAC,
     unfollowAC,
@@ -14,12 +15,14 @@ import {
 } from '../../redux/usersPage-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import {Dispatch} from 'redux';
+import Preloader from '../common/Preloader';
 
 type MapStateToPropsType = {
     users: Array<UserType>
     totalUsersCount: number
     pageSize: number
     currentPage: number
+    isFetching: boolean
 }
 type MapDispatchToPropsType = {
     follow: (userId: string) => void
@@ -27,14 +30,20 @@ type MapDispatchToPropsType = {
     setUsers: (users: Array<UserType>) => void
     setTotalUsersCount: (totalUsersCount: number) => void
     setCurrentPage: (pageNumber: number) => void
+    setFetching: (isFetching: boolean) => void
 }
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 class UsersAPIComponent extends React.Component<UsersPropsType> {
     componentDidMount() {
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then((data: any) => {
-            this.props.setUsers(data.data.items)
-            this.props.setTotalUsersCount(data.data.totalCount)
+            this.props.setFetching(true)
+            setTimeout(()=>{
+                this.props.setUsers(data.data.items)
+                this.props.setTotalUsersCount(data.data.totalCount)
+                this.props.setFetching(false)
+            },2000)
+
         })
     }
 
@@ -48,8 +57,14 @@ class UsersAPIComponent extends React.Component<UsersPropsType> {
         const onChangeCurrentPage = (pageNumber: number) => {
             const pageSize = this.props.pageSize
             axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${pageSize}`).then((data: any) => {
-                this.props.setCurrentPage(pageNumber)
-                this.props.setUsers(data.data.items)
+                this.props.setFetching(true)
+                setTimeout(()=>{
+                    this.props.setCurrentPage(pageNumber)
+                    this.props.setUsers(data.data.items)
+                    this.props.setFetching(false)
+                },2000)
+
+
             })
         }
         const firstPage = (<>
@@ -85,18 +100,20 @@ class UsersAPIComponent extends React.Component<UsersPropsType> {
             {(currentPage > 3) && firstPage}
             {mappedPages}
             {(currentPage < totalPages - 2) && lastPage}
-            <Users users={this.props.users}
-                   follow={this.props.follow}
-                   unfollow={this.props.unfollow}/>
+            {this.props.isFetching ? <Preloader/> : <Users users={this.props.users}
+                                                           follow={this.props.follow}
+                                                           unfollow={this.props.unfollow}/>}
         </div>
 
     }
 }
+
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     users: state.usersPage.users,
     totalUsersCount: state.usersPage.totalUsersCount,
     pageSize: state.usersPage.pageSize,
-    currentPage: state.usersPage.currentPage
+    currentPage: state.usersPage.currentPage,
+    isFetching: state.usersPage.isFetching
 
 })
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
@@ -104,6 +121,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
     unfollow: userId => dispatch(unfollowAC(userId)),
     setUsers: users => dispatch(setUsersAC(users)),
     setTotalUsersCount: totalUsersCount => dispatch(setTotalUsersCountAC(totalUsersCount)),
-    setCurrentPage: pageNumber => dispatch(setCurrentPageAC(pageNumber))
+    setCurrentPage: pageNumber => dispatch(setCurrentPageAC(pageNumber)),
+    setFetching: isFetching => dispatch(setFetchingAC(isFetching))
 })
 export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPIComponent)
