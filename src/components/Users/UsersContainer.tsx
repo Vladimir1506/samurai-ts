@@ -1,6 +1,5 @@
 import {connect} from 'react-redux';
 import React from 'react';
-// import {UsersPropsType} from './UsersContainer';
 import axios from 'axios';
 import PagerPageNumber from './PagerPageNumber';
 import Users from './Users';

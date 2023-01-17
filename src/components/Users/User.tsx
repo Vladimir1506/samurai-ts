@@ -2,6 +2,7 @@ import React from 'react';
 import {UserType} from '../../redux/usersPage-reducer';
 import classes from './User.module.css'
 import defaultUserImage from '../../assets/images/default-user.png'
+import {NavLink} from 'react-router-dom';
 
 type UserPropsType = {
     user: UserType
@@ -22,7 +23,9 @@ const User = ({user, follow, unfollow}: UserPropsType) => {
                     <button onClick={followButtonHandler}>Follow</button>
                 }
             </div>
-            <div><span>{user.name}</span></div>
+            <NavLink to={'profile/' + user.id}>
+                <div><span>{user.name}</span></div>
+            </NavLink>
             <div className={classes.address}>
                 {/*<div>{'user.address.country'}</div>*/}
                 {/*<div>{'user.address.city'}</div>*/}

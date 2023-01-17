@@ -1,12 +1,13 @@
-import {AnyAction} from 'redux';
 import {PostType} from '../components/Profile/MyPosts/MyPostsContainer';
 
 export type ProfilePageStateType = {
     posts: Array<PostType>,
     newPostText: string,
+    profile: any
 }
 const ADD_POST = 'ADD-POST'
 const CHANGE_POST_TEXT_VALUE = 'CHANGE-POST-TEXT-VALUE'
+const SET_PROFILE = 'SET-PROFILE'
 
 const initState = {
     posts: [
@@ -16,8 +17,9 @@ const initState = {
         {id: 4, postText: 'POST4', likesCount: 1},
     ],
     newPostText: '',
+    profile: null
 }
-export const profilePageReducer = (state: ProfilePageStateType = initState, action: AnyAction): ProfilePageStateType => {
+export const profilePageReducer = (state: ProfilePageStateType = initState, action: ProfilePageActionType): ProfilePageStateType => {
     switch (action.type) {
         case ADD_POST:
             return {
@@ -28,14 +30,29 @@ export const profilePageReducer = (state: ProfilePageStateType = initState, acti
                 }]
             }
         case CHANGE_POST_TEXT_VALUE:
-            return {...state, newPostText: action?.text || ''}
+            return {...state, newPostText: action.payload.text || ''}
+        case SET_PROFILE:
+            return {...state, profile: action.payload.profile}
         default:
             return state
     }
 }
 
-export const addPostAC = (): AnyAction => ({type: ADD_POST})
-export const changePostTextValueAC = (text: string): AnyAction => ({
+type ProfilePageActionType = addPostACType
+    | changePostTextValueACType
+    | SetProfileACType
+
+type addPostACType = ReturnType<typeof addPost>
+export const addPost = () => ({type: ADD_POST}) as const
+
+type changePostTextValueACType = ReturnType<typeof changePostTextValue>
+export const changePostTextValue = (text: string) => ({
     type: CHANGE_POST_TEXT_VALUE,
-    text
-})
+    payload: {text}
+}) as const
+
+type SetProfileACType = ReturnType<typeof setProfile>
+export const setProfile = (profile: any) => ({
+    type: SET_PROFILE,
+    payload: {profile}
+}) as const
