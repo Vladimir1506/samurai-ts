@@ -15,7 +15,6 @@ export type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
     componentDidMount() {
-        debugger
         axios.get('https://social-network.samuraijs.com/api/1.0/auth/me', {
             withCredentials: true
         }).then((response) => {
@@ -27,7 +26,6 @@ class HeaderContainer extends React.Component<HeaderContainerType> {
     }
 
     render() {
-        debugger
         return <Header {...this.props}/>
     }
 }

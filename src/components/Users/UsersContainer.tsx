@@ -34,7 +34,7 @@ export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 class UsersAPIComponent extends React.Component<UsersPropsType> {
     componentDidMount() {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((data: any) => {
+        axios.get('https://social-network.samuraijs.com/api/1.0/users', {withCredentials: true}).then((data: any) => {
             this.props.setFetching(true)
             setTimeout(() => {
                 this.props.setUsers(data.data.items)
@@ -54,7 +54,7 @@ class UsersAPIComponent extends React.Component<UsersPropsType> {
         }
         const onChangeCurrentPage = (pageNumber: number) => {
             const pageSize = this.props.pageSize
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${pageSize}`).then((data: any) => {
+            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${pageSize}`, {withCredentials: true}).then((data: any) => {
                 this.props.setFetching(true)
                 setTimeout(() => {
                     this.props.setCurrentPage(pageNumber)

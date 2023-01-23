@@ -5,7 +5,6 @@ import {HeaderContainerType} from './HeaderContainer';
 
 type HeaderPropsType = HeaderContainerType
 const Header = ({login, isAuth}: HeaderPropsType) => {
-    debugger
     return (
         <header className={classes.header}>
             <img
