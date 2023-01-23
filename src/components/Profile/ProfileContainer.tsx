@@ -13,6 +13,7 @@ export type ProfilePagePropsType =
 
 class ProfileContainer extends React.Component<ProfilePagePropsType> {
     componentDidMount() {
+        console.log('didMount')
         const userId = this.props.match.params.userId
         console.log(userId)
         userId ? axios.get(
@@ -25,6 +26,8 @@ class ProfileContainer extends React.Component<ProfilePagePropsType> {
     }
 
     render() {
+        console.log('render')
+
         return <Profile {...this.props}/>
     }
 }
