@@ -3,7 +3,7 @@ import {UserType} from '../../redux/usersPage-reducer';
 import classes from './User.module.css'
 import defaultUserImage from '../../assets/images/default-user.png'
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
+import {usersAPI} from '../../api/api';
 
 type UserPropsType = {
     user: UserType
@@ -12,19 +12,15 @@ type UserPropsType = {
 }
 const User = ({user, follow, unfollow}: UserPropsType) => {
     const followButtonHandler = () => {
-        axios.post('https://social-network.samuraijs.com/api/1.0/follow/' + user.id, {}, {
-            withCredentials: true
-        }).then(response => {
-            if (response.data.resultCode === 0) {
+        usersAPI.follow(user.id).then(data => {
+            if (data.resultCode === 0) {
                 follow(user.id)
             }
         })
     }
     const unfollowButtonHandler = () => {
-        axios.delete('https://social-network.samuraijs.com/api/1.0/follow/' + user.id, {
-            withCredentials: true
-        }).then(response => {
-            if (response.data.resultCode === 0) {
+        usersAPI.unfollow(user.id).then(data => {
+            if (data.resultCode === 0) {
                 unfollow(user.id)
             }
         })

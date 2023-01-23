@@ -1,6 +1,5 @@
 import {connect} from 'react-redux';
 import React from 'react';
-import axios from 'axios';
 import PagerPageNumber from './PagerPageNumber';
 import Users from './Users';
 import {
@@ -14,6 +13,7 @@ import {
 } from '../../redux/usersPage-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import Preloader from '../common/Preloader';
+import {usersAPI} from '../../api/api';
 
 type MapStateToPropsType = {
     users: Array<UserType>
@@ -34,11 +34,11 @@ export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 class UsersAPIComponent extends React.Component<UsersPropsType> {
     componentDidMount() {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users', {withCredentials: true}).then((data: any) => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
             this.props.setFetching(true)
             setTimeout(() => {
-                this.props.setUsers(data.data.items)
-                this.props.setTotalUsersCount(data.data.totalCount)
+                this.props.setUsers(data.items)
+                this.props.setTotalUsersCount(data.totalCount)
                 this.props.setFetching(false)
             }, 2000)
 
@@ -53,12 +53,11 @@ class UsersAPIComponent extends React.Component<UsersPropsType> {
             (i > 0) && (i <= totalPages) && pages.push(i)
         }
         const onChangeCurrentPage = (pageNumber: number) => {
-            const pageSize = this.props.pageSize
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${pageSize}`, {withCredentials: true}).then((data: any) => {
+            usersAPI.getUsers(pageNumber, this.props.pageSize).then((data) => {
                 this.props.setFetching(true)
                 setTimeout(() => {
                     this.props.setCurrentPage(pageNumber)
-                    this.props.setUsers(data.data.items)
+                    this.props.setUsers(data.items)
                     this.props.setFetching(false)
                 }, 2000)
 
