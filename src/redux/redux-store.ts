@@ -1,4 +1,4 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers, createStore, Store} from 'redux';
 import {profilePageReducer} from './profilePage-reducer';
 import {messagePageReducer} from './messagePage-reducer';
 import {usersPageReducer} from './usersPage-reducer';
@@ -16,3 +16,10 @@ const rootReducer = combineReducers(
 export type AppStateType = ReturnType<typeof rootReducer>
 
 export const store = createStore(rootReducer);
+
+declare global {
+    interface Window {
+        store: Store;
+    }
+}
+window.store = store;

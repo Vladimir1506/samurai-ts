@@ -4,6 +4,8 @@ const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 const SET_FETCHING = 'SET-FETCHING'
+const TOGGLE_FOLLOWING_IN_PROGRESS_USERS_ID = 'TOGGLE-FOLLOWING-IN-PROGRESS-USERS-ID'
+
 export type UserType = {
     id: string,
     name: string,
@@ -21,30 +23,29 @@ type UsersStateType = {
     pageSize: number
     currentPage: number
     isFetching: boolean
+    followingUsersIds: string[]
 }
 const initialState = {
     users: [],
     totalUsersCount: 77,
     pageSize: 15,
     currentPage: 1,
-    isFetching: false
+    isFetching: false,
+    followingUsersIds: []
 }
 export const usersPageReducer = (state: UsersStateType = initialState, action: ActionType): UsersStateType => {
+
     switch (action.type) {
         case FOLLOW:
             return {
-                ...state,
-                users: state.users.map((user: UserType) => user.id === action.payload.userId ? {
-                    ...user,
-                    followed: true
+                ...state, users: state.users.map((user: UserType) => user.id === action.payload.userId ? {
+                    ...user, followed: true
                 } : user)
             }
         case UNFOLLOW:
             return {
-                ...state,
-                users: state.users.map((user: UserType) => user.id === action.payload.userId ? {
-                    ...user,
-                    followed: false
+                ...state, users: state.users.map((user: UserType) => user.id === action.payload.userId ? {
+                    ...user, followed: false
                 } : user)
             }
         case SET_USERS:
@@ -55,6 +56,12 @@ export const usersPageReducer = (state: UsersStateType = initialState, action: A
             return {...state, currentPage: action.payload.pageNumber}
         case SET_FETCHING:
             return {...state, isFetching: action.payload.isFetching}
+        case TOGGLE_FOLLOWING_IN_PROGRESS_USERS_ID:
+            return {
+
+                ...state,
+                followingUsersIds: state.followingUsersIds.find(userId => userId === action.payload.userId) ? state.followingUsersIds.filter(userId => userId !== action.payload.userId) : [...state.followingUsersIds, action.payload.userId]
+            }
         default:
             return state
     }
@@ -65,6 +72,7 @@ type ActionType = followACType
     | setCurrentPageACType
     | setTotalUsersCountACType
     | setFetchingACType
+    | toggleFollowedUserIdACType
 type followACType = ReturnType<typeof follow>
 export const follow = (userId: string) => ({
     type: FOLLOW,
@@ -95,4 +103,9 @@ type setFetchingACType = ReturnType<typeof setFetching>
 export const setFetching = (isFetching: boolean) => ({
     type: SET_FETCHING,
     payload: {isFetching}
+}) as const
+type toggleFollowedUserIdACType = ReturnType<typeof toggleFollowedUserId>
+export const toggleFollowedUserId = (userId: string) => ({
+    type: TOGGLE_FOLLOWING_IN_PROGRESS_USERS_ID,
+    payload: {userId}
 }) as const

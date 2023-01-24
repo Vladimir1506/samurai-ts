@@ -9,21 +9,32 @@ type UserPropsType = {
     user: UserType
     follow: (userId: string) => void
     unfollow: (userId: string) => void
+    isFollowingInProgress: boolean,
+    toggleFollowedUserId: (userId: string) => void
 }
-const User = ({user, follow, unfollow}: UserPropsType) => {
+const User = ({user, follow, unfollow, isFollowingInProgress, toggleFollowedUserId}: UserPropsType) => {
     const followButtonHandler = () => {
-        usersAPI.follow(user.id).then(data => {
-            if (data.resultCode === 0) {
-                follow(user.id)
-            }
-        })
+        toggleFollowedUserId(user.id)
+        setTimeout(() => {
+            usersAPI.follow(user.id).then(data => {
+                if (data.resultCode === 0) {
+                    follow(user.id)
+                    toggleFollowedUserId(user.id)
+                }
+            })
+
+        }, 3000)
     }
     const unfollowButtonHandler = () => {
-        usersAPI.unfollow(user.id).then(data => {
-            if (data.resultCode === 0) {
-                unfollow(user.id)
-            }
-        })
+        toggleFollowedUserId(user.id)
+        setTimeout(() => {
+            usersAPI.unfollow(user.id).then(data => {
+                if (data.resultCode === 0) {
+                    unfollow(user.id)
+                    toggleFollowedUserId(user.id)
+                }
+            })
+        }, 3000)
     }
     return (
         <div className={classes.item}>
@@ -32,16 +43,14 @@ const User = ({user, follow, unfollow}: UserPropsType) => {
                           src={user.photos.small ?? defaultUserImage}
                           alt="Avatar"/></div>
                 {user.followed ?
-                    <button onClick={unfollowButtonHandler}>Unfollow</button> :
-                    <button onClick={followButtonHandler}>Follow</button>
+                    <button disabled={isFollowingInProgress} onClick={unfollowButtonHandler}>Unfollow</button> :
+                    <button disabled={isFollowingInProgress} onClick={followButtonHandler}>Follow</button>
                 }
             </div>
             <NavLink to={'profile/' + user.id}>
                 <div><span>{user.name}</span></div>
             </NavLink>
             <div className={classes.address}>
-                {/*<div>{'user.address.country'}</div>*/}
-                {/*<div>{'user.address.city'}</div>*/}
             </div>
         </div>
     );
