@@ -1,5 +1,5 @@
 import {DispatchType} from './redux-store';
-import {usersAPI} from '../api/api';
+import {authAPI} from '../api/api';
 
 const SET_USER_DATA = 'SET-USER-DATA'
 
@@ -39,7 +39,7 @@ export const setUserData = (userId: string | null, email: string | null, login: 
 }) as const
 
 export const auth = () => (dispatch: DispatchType) => {
-    usersAPI.auth().then((data) => {
+    authAPI.auth().then((data) => {
         if (data.resultCode === 0) {
             const {id, email, login} = data.data
             dispatch(setUserData(id, email, login))
