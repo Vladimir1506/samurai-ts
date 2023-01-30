@@ -1,4 +1,6 @@
 import {PostType} from '../components/Profile/MyPosts/MyPostsContainer';
+import {DispatchType} from './redux-store';
+import {usersAPI} from '../api/api';
 
 export type ProfilePageStateType = {
     posts: Array<PostType>,
@@ -56,3 +58,11 @@ export const setProfile = (profile: any) => ({
     type: SET_PROFILE,
     payload: {profile}
 }) as const
+
+export const getProfile = (userId: string) => (dispatch: DispatchType) => {
+    userId ? usersAPI.getProfile(userId).then(data => {
+        setTimeout(() => {
+            dispatch(setProfile(data))
+        }, 2000)
+    }) : dispatch(setProfile(null))
+}

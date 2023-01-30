@@ -9,6 +9,12 @@ export const usersAPI = {
     getUsers(pageNumber: number = 1, pageSize: number = 10) {
         return instance.get(`users?page=${pageNumber}&count=${pageSize}`).then(response => response.data)
     },
+    follow(userId: string) {
+        return instance.post('follow/' + userId).then(response => response.data)
+    },
+    unfollow(userId: string) {
+        return instance.delete('follow/' + userId).then(response => response.data)
+    },
     auth() {
         return instance.get('auth/me').then(response => response.data)
     },
@@ -17,10 +23,4 @@ export const usersAPI = {
             `profile/${userId}`
         ).then(response => response.data)
     },
-    follow(userId: string) {
-        return instance.post('follow/' + userId).then(response => response.data)
-    },
-    unfollow(userId: string) {
-        return instance.delete('follow/' + userId).then(response => response.data)
-    }
 }

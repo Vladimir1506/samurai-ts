@@ -1,3 +1,6 @@
+import {usersAPI} from '../api/api';
+import {DispatchType} from './redux-store';
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
@@ -27,7 +30,7 @@ type UsersStateType = {
 }
 const initialState = {
     users: [],
-    totalUsersCount: 77,
+    totalUsersCount: 0,
     pageSize: 15,
     currentPage: 1,
     isFetching: false,
@@ -73,14 +76,14 @@ type ActionType = followACType
     | setTotalUsersCountACType
     | setFetchingACType
     | toggleFollowedUserIdACType
-type followACType = ReturnType<typeof follow>
-export const follow = (userId: string) => ({
+type followACType = ReturnType<typeof followAC>
+export const followAC = (userId: string) => ({
     type: FOLLOW,
     payload: {userId}
 }) as const
-type unfollowACType = ReturnType<typeof unfollow>
+type unfollowACType = ReturnType<typeof unfollowAC>
 
-export const unfollow = (userId: string) => ({
+export const unfollowAC = (userId: string) => ({
     type: UNFOLLOW,
     payload: {userId}
 }) as const
@@ -109,3 +112,39 @@ export const toggleFollowedUserId = (userId: string) => ({
     type: TOGGLE_FOLLOWING_IN_PROGRESS_USERS_ID,
     payload: {userId}
 }) as const
+
+export const getUsers = (currentPage: number, pageSize: number) => (dispatch: DispatchType) => {
+    dispatch(setFetching(true))
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+        setTimeout(() => {
+            dispatch(setCurrentPage(currentPage))
+            dispatch(setUsers(data.items))
+            dispatch(setTotalUsersCount(data.totalCount))
+            dispatch(setFetching(false))
+        }, 2000)
+    })
+}
+
+export const follow = (userId: string) => (dispatch: DispatchType) => {
+    dispatch(toggleFollowedUserId(userId))
+    setTimeout(() => {
+        usersAPI.follow(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(followAC(userId))
+                dispatch(toggleFollowedUserId(userId))
+            }
+        })
+    }, 3000)
+}
+
+export const unfollow = (userId: string) => (dispatch: DispatchType) => {
+    dispatch(toggleFollowedUserId(userId))
+    setTimeout(() => {
+        usersAPI.unfollow(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unfollowAC(userId))
+                dispatch(toggleFollowedUserId(userId))
+            }
+        })
+    }, 3000)
+}
