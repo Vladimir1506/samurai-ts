@@ -1,18 +1,19 @@
 import React from 'react';
 import classes from './Dialogs.module.css';
-import {Redirect, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import Messages from './Messages';
 import Contacts from './Contacts';
 import {changeMessageTextValueAC, messagesPageStateType, sendMessageAC} from '../../redux/messagePage-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import {Dispatch} from 'redux';
 import {connect} from 'react-redux';
+import WithAuthRedirect from '../../hoc/WithAuthRedirect';
 
 type DialogsContainerPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 class DialogsContainer extends React.Component<DialogsContainerPropsType> {
     render() {
-        if (!this.props.isAuth) return <Redirect to={'/login'}/>
+        // if (!this.props.isAuth) return <Redirect to={'/login'}/>
         const messages = this.props.messagePage.messages
         const messagesRoutes = Object.keys(messages).map((contactId) => {
             const onChangeMessageTextHandler = (text: string) => this.props.onChangeMessageText(contactId, text)
@@ -36,7 +37,7 @@ class DialogsContainer extends React.Component<DialogsContainerPropsType> {
 
 type MapStateToPropsType = {
     messagePage: messagesPageStateType
-    isAuth: boolean
+    // isAuth: boolean
 }
 type MapDispatchToPropsType = {
     onSendMessage: (contactId: string, text: string) => void
@@ -44,11 +45,11 @@ type MapDispatchToPropsType = {
 }
 const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     messagePage: state.messagePage,
-    isAuth: state.authData.isAuth
+    // isAuth: state.authData.isAuth
 })
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
     onSendMessage: (contactId: string, text: string) => dispatch(sendMessageAC(contactId, text)),
     onChangeMessageText: (contactId: string, text: string) => dispatch(changeMessageTextValueAC(contactId, text))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(DialogsContainer)
+export default WithAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(DialogsContainer))
 
