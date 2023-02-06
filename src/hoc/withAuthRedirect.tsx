@@ -10,7 +10,7 @@ const mapStateToPropsRedirect = (state: AppStateType): MapStateToPropsRedirectTy
     isAuth: state.authData.isAuth
 })
 
-export function WithAuthRedirect<T>(Component: ComponentType<T>) {
+export function withAuthRedirect<T>(Component: ComponentType<T>) {
     class RedirectComponent extends React.Component<MapStateToPropsRedirectType> {
 
         render() {
@@ -22,4 +22,4 @@ export function WithAuthRedirect<T>(Component: ComponentType<T>) {
     return connect(mapStateToPropsRedirect)(RedirectComponent)
 }
 
-export default WithAuthRedirect;
+export default withAuthRedirect;

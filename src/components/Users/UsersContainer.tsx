@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import React from 'react';
+import React, {ComponentType} from 'react';
 import PagerPageNumber from './PagerPageNumber';
 import Users from './Users';
 import {
@@ -11,6 +11,8 @@ import {
 } from '../../redux/usersPage-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import Preloader from '../common/Preloader';
+import withAuthRedirect from '../../hoc/withAuthRedirect';
+import {compose} from 'redux';
 
 type MapStateToPropsType = {
     users: Array<UserType>
@@ -80,9 +82,19 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     isFetching: state.usersPage.isFetching,
     followingUsersIds: state.usersPage.followingUsersIds
 })
-export const UsersContainer = connect(mapStateToProps, {
-    follow,
-    unfollow,
-    setFetching,
-    getUsers
-})(UsersAPIComponent)
+
+export default compose<ComponentType>(
+    withAuthRedirect,
+    connect(mapStateToProps, {
+            follow,
+            unfollow,
+            setFetching,
+            getUsers
+        }
+    ))(UsersAPIComponent)
+// export default withAuthRedirect (connect(mapStateToProps, {
+//     follow,
+//     unfollow,
+//     setFetching,
+//     getUsers
+// })(UsersAPIComponent))

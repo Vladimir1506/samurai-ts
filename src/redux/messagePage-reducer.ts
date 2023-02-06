@@ -87,13 +87,14 @@ export const messagePageReducer = (state: messagesPageStateType = initState, act
             return state
     }
 }
-export const sendMessageAC = (id: string, text: string) => ({
+
+export const onSendMessage = (id: string, text: string) => ({
     type: SEND_MESSAGE,
     id,
     text
-})
-export const changeMessageTextValueAC = (id: string, text: string) => ({
+}) as const
+export const onChangeMessageText = (id: string, text: string) => ({
     type: CHANGE_MESSAGE_TEXT_VALUE,
     id,
     text
-})
+}) as const
