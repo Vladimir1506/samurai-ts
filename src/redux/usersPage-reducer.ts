@@ -13,7 +13,7 @@ export type UserType = {
     id: string,
     name: string,
     avatar: string,
-    photos: { small: string },
+    photos: { small: string, large: string },
     followed: boolean,
     address: {
         country: string,
@@ -121,7 +121,7 @@ export const getUsers = (currentPage: number, pageSize: number) => (dispatch: Di
             dispatch(setUsers(data.items))
             dispatch(setTotalUsersCount(data.totalCount))
             dispatch(setFetching(false))
-        }, 2000)
+        }, 700)
     })
 }
 
@@ -134,7 +134,7 @@ export const follow = (userId: string) => (dispatch: DispatchType) => {
                 dispatch(toggleFollowedUserId(userId))
             }
         })
-    }, 3000)
+    }, 700)
 }
 
 export const unfollow = (userId: string) => (dispatch: DispatchType) => {
@@ -146,5 +146,5 @@ export const unfollow = (userId: string) => (dispatch: DispatchType) => {
                 dispatch(toggleFollowedUserId(userId))
             }
         })
-    }, 3000)
+    }, 700)
 }

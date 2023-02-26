@@ -9,14 +9,14 @@ type MapStateToPropsType = {
     isAuth: boolean
 }
 type MapDispatchToPropsType = {
-    auth: () => void,
+    me: () => void,
 }
 
 export type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
     componentDidMount() {
-        this.props.auth()
+        this.props.me()
     }
 
     render() {
@@ -29,5 +29,5 @@ const mapStateToProps = ({authData}: AppStateType): MapStateToPropsType => ({
     isAuth: authData.isAuth
 })
 
-export default connect(mapStateToProps, {auth})(HeaderContainer)
+export default connect(mapStateToProps, {me: auth})(HeaderContainer)
 

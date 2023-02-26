@@ -1,5 +1,7 @@
 import {DispatchType} from './redux-store';
-import {authAPI} from '../api/api';
+import {authAPI, usersAPI} from '../api/api';
+import {setProfile} from './profilePage-reducer';
+import {LoginDataType} from '../components/Login/Login';
 
 const SET_USER_DATA = 'SET-USER-DATA'
 
@@ -39,10 +41,20 @@ export const setUserData = (userId: string | null, email: string | null, login: 
 }) as const
 
 export const auth = () => (dispatch: DispatchType) => {
-    authAPI.auth().then((data) => {
+    authAPI.me().then((data) => {
         if (data.resultCode === 0) {
             const {id, email, login} = data.data
             dispatch(setUserData(id, email, login))
+            usersAPI.getProfile(id).then(profile => dispatch(setProfile(profile)))
         }
     })
+}
+
+export const login = (data: LoginDataType) => {
+    authAPI.login(data).then(data => {
+            if (data.resultCode === 0) {
+                alert('success')
+            } else (alert(data.messages[0]))
+        }
+    )
 }

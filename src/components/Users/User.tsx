@@ -17,7 +17,7 @@ const User = ({user, follow, unfollow, isFollowingInProgress}: UserPropsType) =>
         <div className={classes.item}>
             <div className={classes.avatar}>
                 <div><img className={classes.img}
-                          src={user.photos.small ?? defaultUserImage}
+                          src={user.photos.large || defaultUserImage}
                           alt="Avatar"/></div>
                 {user.followed ?
                     <button disabled={isFollowingInProgress} onClick={unfollowButtonHandler}>Unfollow</button> :
