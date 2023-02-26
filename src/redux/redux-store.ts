@@ -24,4 +24,5 @@ declare global {
         store: typeof store;
     }
 }
+
 window.store = store;

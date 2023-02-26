@@ -1,9 +1,8 @@
 import {Field, Form, Formik} from 'formik';
-// import {login} from '../../redux/auth-reducer';
 import React from 'react';
 
 export type LoginDataType = { email: string, password: string, rememberMe: boolean, captcha: boolean }
-type LoginFormType = { login: (data: LoginDataType) => void }
+type LoginFormType = { login: (data: LoginDataType, setStatus: (status?: any) => void) => void }
 const LoginForm = ({login}: LoginFormType) => (
     <Formik
         initialValues={{email: '', password: '', rememberMe: false, captcha: false}}
@@ -17,8 +16,9 @@ const LoginForm = ({login}: LoginFormType) => (
             }
             if (errors.email || errors.password) return errors;
         }}
-        onSubmit={(values) => {
-            login(values)
+        onSubmit={(values, {setStatus}) => {
+            login(values, setStatus)
+
         }}>
         {({
               values,
@@ -27,8 +27,9 @@ const LoginForm = ({login}: LoginFormType) => (
               handleChange,
               handleBlur,
               handleSubmit,
-          }) => (
-            <Form onSubmit={handleSubmit}>
+              status
+          }) => {
+            return <Form onSubmit={handleSubmit}>
                 <div>
                     <Field
                         type="email"
@@ -52,17 +53,20 @@ const LoginForm = ({login}: LoginFormType) => (
                     />
                     {touched.password && errors.password}
                 </div>
-
                 <label>
                     <Field type="checkbox" name={'remember'}/>
-                    remember me</label>
+                    remember me
+                </label>
+                <div>
+                    {status && status.error}
+                </div>
                 <div>
                     <button type="submit">
                         Submit
                     </button>
                 </div>
             </Form>
-        )}
+        }}
     </Formik>
 );
 

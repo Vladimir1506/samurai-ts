@@ -50,12 +50,14 @@ export const auth = () => (dispatch: AppDispatch) => {
     })
 }
 
-export const login = (data: LoginDataType) => (dispatch: AppDispatch) => {
+export const login = (data: LoginDataType, setStatus: (status?: any) => void) => (dispatch: AppDispatch) => {
     authAPI.login(data).then(data => {
             if (data.resultCode === 0) {
                 dispatch(auth())
-                alert('success')
-            } else (alert(data.messages[0]))
+                setStatus(null)
+            } else {
+                setStatus({error: data.messages[0]})
+            }
         }
     )
 }

@@ -15,7 +15,7 @@ class Login extends Component <MapDispatchToPropsType> {
 }
 
 type MapDispatchToPropsType = {
-    login: (data: LoginDataType) => void
+    login: (data: LoginDataType, setStatus: (status?: any) => void) => void
 }
 export default connect(null, {login})(Login);
 
