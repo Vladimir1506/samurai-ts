@@ -1,5 +1,5 @@
 import {usersAPI} from '../api/api';
-import {DispatchType} from './redux-store';
+import {AppDispatch} from './redux-store';
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -36,7 +36,7 @@ const initialState = {
     isFetching: false,
     followingUsersIds: []
 }
-export const usersPageReducer = (state: UsersStateType = initialState, action: ActionType): UsersStateType => {
+export const usersPageReducer = (state: UsersStateType = initialState, action: UserPageActionsType): UsersStateType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -69,7 +69,7 @@ export const usersPageReducer = (state: UsersStateType = initialState, action: A
             return state
     }
 }
-type ActionType = followACType
+export type UserPageActionsType = followACType
     | unfollowACType
     | setUsersACType
     | setCurrentPageACType
@@ -113,7 +113,7 @@ export const toggleFollowedUserId = (userId: string) => ({
     payload: {userId}
 }) as const
 
-export const getUsers = (currentPage: number, pageSize: number) => (dispatch: DispatchType) => {
+export const getUsers = (currentPage: number, pageSize: number) => (dispatch: AppDispatch) => {
     dispatch(setFetching(true))
     usersAPI.getUsers(currentPage, pageSize).then((data) => {
         setTimeout(() => {
@@ -125,7 +125,7 @@ export const getUsers = (currentPage: number, pageSize: number) => (dispatch: Di
     })
 }
 
-export const follow = (userId: string) => (dispatch: DispatchType) => {
+export const follow = (userId: string) => (dispatch: AppDispatch) => {
     dispatch(toggleFollowedUserId(userId))
     setTimeout(() => {
         usersAPI.follow(userId).then(data => {
@@ -137,7 +137,7 @@ export const follow = (userId: string) => (dispatch: DispatchType) => {
     }, 700)
 }
 
-export const unfollow = (userId: string) => (dispatch: DispatchType) => {
+export const unfollow = (userId: string) => (dispatch: AppDispatch) => {
     dispatch(toggleFollowedUserId(userId))
     setTimeout(() => {
         usersAPI.unfollow(userId).then(data => {

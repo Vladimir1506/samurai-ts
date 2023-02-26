@@ -11,7 +11,6 @@ import {
 } from '../../redux/usersPage-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import Preloader from '../common/Preloader';
-import withAuthRedirect from '../../hoc/withAuthRedirect';
 import {compose} from 'redux';
 
 type MapStateToPropsType = {
@@ -84,7 +83,6 @@ const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
 })
 
 export default compose<ComponentType>(
-    withAuthRedirect,
     connect(mapStateToProps, {
             follow,
             unfollow,
@@ -92,9 +90,3 @@ export default compose<ComponentType>(
             getUsers
         }
     ))(UsersAPIComponent)
-// export default withAuthRedirect (connect(mapStateToProps, {
-//     follow,
-//     unfollow,
-//     setFetching,
-//     getUsers
-// })(UsersAPIComponent))

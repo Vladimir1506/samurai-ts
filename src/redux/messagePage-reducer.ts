@@ -1,4 +1,3 @@
-import {AnyAction} from 'redux';
 import {ContactType} from '../components/Dialogs/Contacts';
 
 export type MessageType = {
@@ -14,7 +13,6 @@ export type messagesPageStateType = {
 }
 
 const SEND_MESSAGE = 'SEND-MESSAGE'
-const CHANGE_MESSAGE_TEXT_VALUE = 'CHANGE-MESSAGE-TEXT-VALUE'
 
 const initState = {
     contacts: [
@@ -64,13 +62,8 @@ const initState = {
     }
 
 }
-export const messagePageReducer = (state: messagesPageStateType = initState, action: AnyAction): messagesPageStateType => {
+export const messagePageReducer = (state: messagesPageStateType = initState, action: messagePageActionsType): messagesPageStateType => {
     switch (action.type) {
-        case CHANGE_MESSAGE_TEXT_VALUE:
-            return {
-                ...state,
-                messages: {...state.messages, [action.id]: {...state.messages[action.id], messageText: action.text}}
-            }
         case SEND_MESSAGE:
             return {
                 ...state,
@@ -87,14 +80,10 @@ export const messagePageReducer = (state: messagesPageStateType = initState, act
             return state
     }
 }
-
+export type messagePageActionsType = onSendMessageActionType
+type onSendMessageActionType = ReturnType<typeof onSendMessage>
 export const onSendMessage = (id: string, text: string) => ({
     type: SEND_MESSAGE,
-    id,
-    text
-}) as const
-export const onChangeMessageText = (id: string, text: string) => ({
-    type: CHANGE_MESSAGE_TEXT_VALUE,
     id,
     text
 }) as const

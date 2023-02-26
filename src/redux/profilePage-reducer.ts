@@ -1,6 +1,6 @@
 import {PostType} from '../components/Profile/MyPosts/MyPostsContainer';
-import {DispatchType} from './redux-store';
 import {profileAPI, usersAPI} from '../api/api';
+import {AppDispatch} from './redux-store';
 
 export type ProfilePageStateType = {
     posts: Array<PostType>,
@@ -32,7 +32,6 @@ export type ProfileType = null | {
     photos: PhotosType
 }
 const ADD_POST = 'ADD-POST'
-const CHANGE_POST_TEXT_VALUE = 'CHANGE-POST-TEXT-VALUE'
 const SET_PROFILE = 'SET-PROFILE'
 const SET_STATUS = 'SET-STATUS'
 
@@ -47,7 +46,7 @@ const initState: ProfilePageStateType = {
     profile: {} as ProfileType,
     status: 'No status'
 }
-export const profilePageReducer = (state: ProfilePageStateType = initState, action: ProfilePageActionType): ProfilePageStateType => {
+export const profilePageReducer = (state: ProfilePageStateType = initState, action: ProfilePageActionsType): ProfilePageStateType => {
     switch (action.type) {
         case ADD_POST:
             return {
@@ -57,8 +56,6 @@ export const profilePageReducer = (state: ProfilePageStateType = initState, acti
                     likesCount: 0
                 }]
             }
-        case CHANGE_POST_TEXT_VALUE:
-            return {...state, newPostText: action.payload.text || ''}
         case SET_PROFILE:
             return {...state, profile: action.payload.profile}
         case SET_STATUS:
@@ -68,19 +65,14 @@ export const profilePageReducer = (state: ProfilePageStateType = initState, acti
     }
 }
 
-type ProfilePageActionType = addPostACType
-    | changePostTextValueACType
+export type ProfilePageActionsType = addPostACType
     | SetProfileACType
     | SetStatusACType
 
 type addPostACType = ReturnType<typeof addPost>
 export const addPost = (postText: string) => ({type: ADD_POST, payload: {postText}}) as const
 
-type changePostTextValueACType = ReturnType<typeof changePostTextValue>
-export const changePostTextValue = (text: string) => ({
-    type: CHANGE_POST_TEXT_VALUE,
-    payload: {text}
-}) as const
+
 
 type SetProfileACType = ReturnType<typeof setProfile>
 type SetStatusACType = ReturnType<typeof setStatus>
@@ -95,7 +87,7 @@ const setStatus = (status: string) => ({
     payload: {status}
 }) as const
 
-export const getProfile = (userId: string) => (dispatch: DispatchType) => {
+export const getProfile = (userId: string) => (dispatch: AppDispatch) => {
     dispatch(setProfile(null))
     userId && usersAPI.getProfile(userId).then(data => {
         setTimeout(() => {
@@ -104,11 +96,11 @@ export const getProfile = (userId: string) => (dispatch: DispatchType) => {
     })
 }
 
-export const getUserStatus = (userId: string) => (dispatch: DispatchType) => {
+export const getUserStatus = (userId: string) => (dispatch: AppDispatch) => {
     profileAPI.getStatus(userId).then((status) => dispatch(setStatus(status)))
 }
 
-export const updateStatus = (status: string) => (dispatch: DispatchType) => {
+export const updateStatus = (status: string) => (dispatch: AppDispatch) => {
     profileAPI.updateStatus(status).then((data) => {
         if (data.resultCode === 0) {
             dispatch(setStatus(status))

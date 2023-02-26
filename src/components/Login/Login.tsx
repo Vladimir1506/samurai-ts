@@ -1,76 +1,22 @@
-import React from 'react';
-import {Field, Form, Formik} from 'formik';
+import React, {Component} from 'react';
+import LoginForm, {LoginDataType} from './LoginForm';
+import {connect} from 'react-redux';
 import {login} from '../../redux/auth-reducer';
 
-const Login = () => {
-    return (<>
-            <h1> Login </h1>
-            <LoginForm/>
-        </>
-    );
-};
+class Login extends Component <MapDispatchToPropsType> {
+    render() {
+        return (
+            <>
+                <h1> Login </h1>
+                <LoginForm login={this.props.login}/>
+            </>
+        );
+    }
+}
 
-export default Login;
-export type LoginDataType = { email: string, password: string, rememberMe: boolean, captcha: boolean }
+type MapDispatchToPropsType = {
+    login: (data: LoginDataType) => void
+}
+export default connect(null, {login})(Login);
 
-const LoginForm = () => (
-    <Formik
-        initialValues={{email: '', password: '', rememberMe: false, captcha: false}}
-        validate={values => {
-            const errors: LoginDataType = {email: '', password: '', rememberMe: false, captcha: false};
-            if (!values.email) {
-                errors.email = 'Required';
-            }
-            if (!values.password) {
-                errors.password = 'Required';
-            }
-            if (errors.email || errors.password) return errors;
-        }}
-        onSubmit={(values) => {
-            login(values)
-        }}>
-        {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-          }) => (
-            <Form onSubmit={handleSubmit}>
-                <div>
-                    <Field
-                        type="email"
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.email}
-                        placeholder={'Email'}
-                    />
-                    {touched.email && errors.email}
-                </div>
-                <div>
-                    <Field
-                        type="password"
-                        name="password"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password}
-                        placeholder={'Password'}
 
-                    />
-                    {touched.password && errors.password}
-                </div>
-
-                <label>
-                    <Field type="checkbox" name={'remember'}/>
-                    remember me</label>
-                <div>
-                    <button type="submit">
-                        Submit
-                    </button>
-                </div>
-            </Form>
-        )}
-    </Formik>
-);
