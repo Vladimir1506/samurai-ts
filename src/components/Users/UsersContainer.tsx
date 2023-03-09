@@ -21,6 +21,7 @@ class UsersAPIComponent extends React.Component<UsersPropsType> {
     }
 
     render() {
+        console.log('Users render')
         const currentPage = this.props.currentPage
         const totalPages = Math.ceil(this.props.totalUsersCount / this.props.pageSize)
         let pages: number[] = []
@@ -74,14 +75,17 @@ type MapDispatchToPropsType = {
     fetchUsers: (currentPage: number, pageSize: number) => void
 }
 export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
-const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
-    users: getUsers(state),
-    totalUsersCount: getTotalUsersCount(state),
-    pageSize: getPageSize(state),
-    currentPage: getCurrentPage(state),
-    isFetching: getIsFetching(state),
-    followingUsersIds: getFollowingUsersIds(state)
-})
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => {
+    console.log('Users mapStateToProps')
+    return ({
+        users: getUsers(state),
+        totalUsersCount: getTotalUsersCount(state),
+        pageSize: getPageSize(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingUsersIds: getFollowingUsersIds(state)
+    })
+}
 
 export default compose<ComponentType>(
     connect(mapStateToProps, {
