@@ -41,7 +41,7 @@ export const setUserData = ({userId, email, login, isAuth}: AuthStateType) => ({
 }) as const
 
 export const auth = () => (dispatch: AppDispatch) => {
-    authAPI.me().then((data) => {
+    return authAPI.me().then((data) => {
         if (data.resultCode === 0) {
             const {id, email, login} = data.data
             dispatch(setUserData({userId: id, email, login, isAuth: true}))

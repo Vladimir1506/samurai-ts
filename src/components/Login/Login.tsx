@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import LoginForm, {LoginDataType} from './LoginForm';
 import {connect} from 'react-redux';
 import {login} from '../../redux/auth-reducer';
+import {AppStateType} from '../../redux/redux-store';
 
-class Login extends Component <MapDispatchToPropsType> {
+export type LoginType = MapStateToPropsType & MapDispatchToPropsType
+
+class Login extends Component <LoginType> {
     render() {
+
         return (
             <>
                 <h1> Login </h1>
@@ -14,9 +18,16 @@ class Login extends Component <MapDispatchToPropsType> {
     }
 }
 
-type MapDispatchToPropsType = {
-    login: (data: LoginDataType, setStatus: (status?: any) => void) => void
+type MapStateToPropsType = {
+    initialized: boolean
 }
-export default connect(null, {login})(Login);
+const mapStateToProps = ({app}: AppStateType): MapStateToPropsType => ({
+
+    initialized: app.initialized
+})
+type MapDispatchToPropsType = {
+    login: (data: LoginDataType, setStatus: (status?: any) => void) => void,
+}
+export default connect(mapStateToProps, {login})(Login);
 
 

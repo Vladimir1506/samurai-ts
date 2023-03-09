@@ -4,16 +4,18 @@ import {messagePageReducer} from './messagePage-reducer';
 import {UserPageActionsType, usersPageReducer} from './usersPage-reducer';
 import {AuthActionsType, authReducer} from './auth-reducer';
 import thunk, {ThunkDispatch} from 'redux-thunk'
+import {AppActionType, appReducer} from './app-reducer';
 
 const rootReducer = combineReducers(
     {
         profilePage: profilePageReducer,
         messagePage: messagePageReducer,
         usersPage: usersPageReducer,
-        authData: authReducer
+        authData: authReducer,
+        app: appReducer
     }
 )
-export type AppActionsType = AuthActionsType | ProfilePageActionsType | UserPageActionsType
+export type AppActionsType = AuthActionsType | ProfilePageActionsType | UserPageActionsType | AppActionType
 export type AppStateType = ReturnType<typeof rootReducer>
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

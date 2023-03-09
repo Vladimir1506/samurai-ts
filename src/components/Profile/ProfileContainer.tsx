@@ -14,11 +14,20 @@ export type ProfilePagePropsType =
 
 class ProfileContainer extends React.Component<ProfilePagePropsType> {
     componentDidMount() {
-        const userId = this.props.match.params.userId || (this.props.profile && this.props.profile.userId)
-        if (userId) {
-            this.props.getProfile(userId)
-            this.props.getUserStatus(userId)
+        // const userId = this.props.match.params.userId || (this.props.profile && this.props.profile.userId)
+        // if (userId) {
+        //     this.props.getProfile(userId)
+        //     this.props.getUserStatus(userId)
+        // }
+        let userId = this.props.match.params.userId
+        if (!userId) {
+            if (this.props.profile) userId = this.props.profile.userId
+            if (!userId) {
+                this.props.history.push('/login')
+            }
         }
+        this.props.getProfile(userId)
+        this.props.getUserStatus(userId)
     }
 
     render() {
