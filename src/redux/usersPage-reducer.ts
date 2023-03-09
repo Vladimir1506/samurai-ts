@@ -113,7 +113,7 @@ export const toggleFollowedUserId = (userId: string) => ({
     payload: {userId}
 }) as const
 
-export const getUsers = (currentPage: number, pageSize: number) => (dispatch: AppDispatch) => {
+export const fetchUsers = (currentPage: number, pageSize: number) => (dispatch: AppDispatch) => {
     dispatch(setFetching(true))
     usersAPI.getUsers(currentPage, pageSize).then((data) => {
         setTimeout(() => {
