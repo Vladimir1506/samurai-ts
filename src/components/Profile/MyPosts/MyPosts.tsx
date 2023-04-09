@@ -4,7 +4,7 @@ import {MyPostsPropsType, PostType} from './MyPostsContainer';
 import {Field, Form, Formik} from 'formik';
 
 
-const MyPosts: React.FC<MyPostsPropsType> = ({posts, addPost}: MyPostsPropsType) => {
+const MyPosts: React.FC<MyPostsPropsType> = React.memo(({posts, addPost}: MyPostsPropsType) => {
     const allPosts = posts.map((post: PostType) => <Post key={post.id} post={post}/>)
     return (
         <div>
@@ -15,7 +15,7 @@ const MyPosts: React.FC<MyPostsPropsType> = ({posts, addPost}: MyPostsPropsType)
             </div>
         </div>
     )
-}
+})
 export default MyPosts
 
 type AddPostValueType = { postText: string }

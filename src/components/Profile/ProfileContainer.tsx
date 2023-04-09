@@ -1,11 +1,11 @@
 import React, {ComponentType} from 'react';
 import {connect} from 'react-redux';
 import Profile from './Profile';
-import {AppStateType} from '../../redux/redux-store';
-import {getProfile, getUserStatus, ProfileType, updateStatus} from '../../redux/profilePage-reducer';
+import {AppStateType} from 'redux/redux-store';
 import {RouteComponentProps} from 'react-router-dom';
 import withAuthRedirect from '../../hoc/withAuthRedirect';
 import {compose} from 'redux';
+import {getProfile, getUserStatus, ProfileType, updateStatus} from 'redux/profilePageReducer/profilePage-reducer';
 
 export type ProfilePagePropsType =
     MapStateToPropsType

@@ -1,9 +1,9 @@
 import React from 'react';
-import {addPost} from '../../../redux/profilePage-reducer';
 import MyPosts from './MyPosts';
 import {connect} from 'react-redux';
-import {AppStateType} from '../../../redux/redux-store';
+import {AppStateType} from 'redux/redux-store';
 import {Dispatch} from 'redux';
+import {addPost} from 'redux/profilePageReducer/profilePage-reducer';
 
 export type PostType = {
     id: number,

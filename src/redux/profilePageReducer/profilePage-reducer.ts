@@ -1,6 +1,7 @@
-import {PostType} from '../components/Profile/MyPosts/MyPostsContainer';
-import {profileAPI, usersAPI} from '../api/api';
-import {AppDispatch} from './redux-store';
+import {PostType} from 'components/Profile/MyPosts/MyPostsContainer';
+import {profileAPI, usersAPI} from 'api/api';
+import {AppDispatch} from 'redux/redux-store';
+
 
 export type ProfilePageStateType = {
     posts: Array<PostType>,
@@ -34,7 +35,7 @@ export type ProfileType = null | {
 const ADD_POST = 'ADD-POST'
 const SET_PROFILE = 'SET-PROFILE'
 const SET_STATUS = 'SET-STATUS'
-
+const DELETE_POST = 'DELETE-POST'
 const initState: ProfilePageStateType = {
     posts: [
         {id: 1, postText: 'POST1', likesCount: 4},
@@ -56,6 +57,8 @@ export const profilePageReducer = (state: ProfilePageStateType = initState, acti
                     likesCount: 0
                 }]
             }
+        case DELETE_POST:
+            return {...state, posts: state.posts.filter(post => post.id !== action.payload.postId)}
         case SET_PROFILE:
             return {...state, profile: action.payload.profile}
         case SET_STATUS:
@@ -68,10 +71,12 @@ export const profilePageReducer = (state: ProfilePageStateType = initState, acti
 export type ProfilePageActionsType = addPostACType
     | SetProfileACType
     | SetStatusACType
-
+    | deletePostACType
 type addPostACType = ReturnType<typeof addPost>
 export const addPost = (postText: string) => ({type: ADD_POST, payload: {postText}}) as const
+type deletePostACType = ReturnType<typeof deletePost>
 
+export const deletePost = (postId: number) => ({type: DELETE_POST, payload: {postId}}) as const
 
 
 type SetProfileACType = ReturnType<typeof setProfile>

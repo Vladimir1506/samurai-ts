@@ -1,7 +1,7 @@
-import {authAPI, usersAPI} from '../api/api';
-import {setProfile} from './profilePage-reducer';
-import {LoginDataType} from '../components/Login/LoginForm';
+import {authAPI, usersAPI} from 'api/api';
+import {LoginDataType} from 'components/Login/LoginForm';
 import {AppDispatch} from './redux-store';
+import {setProfile} from 'redux/profilePageReducer/profilePage-reducer';
 
 const SET_USER_DATA = 'SET-USER-DATA'
 

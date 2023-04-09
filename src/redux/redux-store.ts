@@ -1,10 +1,10 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
-import {ProfilePageActionsType, profilePageReducer} from './profilePage-reducer';
 import {messagePageReducer} from './messagePage-reducer';
 import {UserPageActionsType, usersPageReducer} from './usersPage-reducer';
 import {AuthActionsType, authReducer} from './auth-reducer';
 import thunk, {ThunkDispatch} from 'redux-thunk'
 import {AppActionType, appReducer} from './app-reducer';
+import {ProfilePageActionsType, profilePageReducer} from 'redux/profilePageReducer/profilePage-reducer';
 
 const rootReducer = combineReducers(
     {
